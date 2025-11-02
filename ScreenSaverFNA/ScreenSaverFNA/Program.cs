@@ -1,2 +1,2 @@
-﻿using var game = new ScreenSaverFNA.Game1();
+﻿using var game = new ScreenSaverFNA.Game();
 game.Run();

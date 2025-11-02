@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace ScreenSaverFNA
 {
-    public class Game1 : Game
+    public class Game : Microsoft.Xna.Framework.Game
     {
         private Texture2D snowflakeTexture;
         private Texture2D backgroundTexture;
@@ -17,15 +17,15 @@ namespace ScreenSaverFNA
         private List<Snowflake> Snowflakes;
 
         const int SnowflakesCount = 1500;
-        const int minSize = 16;
-        const int maxSize = 32;
-        const int minSpeed = 1;
-        const int midSpeed = 4;
-        const int maxSpeed = 8;
+        const int MinSize = 16;
+        const int MaxSize = 32;
+        const int MinSpeed = 2;
+        const int MidSpeed = 4;
+        const int MaxSpeed = 8;
+        const int SpeedDivider = 2;
         private readonly Random random = new();
 
-
-        public Game1()
+        public Game()
         {
             _graphics = new GraphicsDeviceManager(this)
             {
@@ -39,17 +39,12 @@ namespace ScreenSaverFNA
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-
             base.Initialize();
-            
         }
 
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            // TODO: use this.Content to load your game content here
             snowflakeTexture = Content.Load<Texture2D>("snowFlake");
             backgroundTexture = Content.Load<Texture2D>("winterBackground");
 
@@ -58,8 +53,8 @@ namespace ScreenSaverFNA
             {
                 var x = random.Next(_graphics.PreferredBackBufferWidth);
                 var y = random.Next(_graphics.PreferredBackBufferHeight);
-                var size = random.Next(minSize, maxSize);
-                var speed = (size == minSize) ? random.Next(minSpeed, midSpeed) : random.Next(midSpeed, maxSpeed);
+                var size = random.Next(MinSize, MaxSize);
+                var speed = (size == MinSize) ? random.Next(MinSpeed, MidSpeed) : random.Next(MidSpeed, MaxSpeed);
                 Snowflakes.Add(new Snowflake(x, y, size, speed));
             }
         }
@@ -74,7 +69,7 @@ namespace ScreenSaverFNA
             foreach (var snowflake in Snowflakes)
             {
                 snowflake.Y += snowflake.Speed;
-                snowflake.X += snowflake.Speed / 2;
+                snowflake.X += snowflake.Speed / SpeedDivider;
 
                 if (snowflake.Y > _graphics.PreferredBackBufferHeight)
                 {
@@ -87,8 +82,6 @@ namespace ScreenSaverFNA
                     snowflake.X = -snowflake.Size;
                 }
             }
-
-            // TODO: Add your update logic here
             base.Update(gameTime);
         }
 
@@ -96,17 +89,13 @@ namespace ScreenSaverFNA
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
             _spriteBatch.Begin();
             _spriteBatch.Draw(backgroundTexture, new Rectangle(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight), Color.White);
-            
             foreach(var snowflake in Snowflakes)
             {
                 _spriteBatch.Draw(snowflakeTexture, new Rectangle(snowflake.X, snowflake.Y, snowflake.Size, snowflake.Size), Color.White);
             }
-
             _spriteBatch.End();
-
             base.Draw(gameTime);
         }
     }
