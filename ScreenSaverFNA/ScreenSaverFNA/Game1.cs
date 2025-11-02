@@ -76,7 +76,7 @@ namespace ScreenSaverFNA
                 snowflake.Y += snowflake.Speed;
                 snowflake.X += snowflake.Speed / 2;
 
-                if (snowflake.Y> _graphics.PreferredBackBufferHeight)
+                if (snowflake.Y > _graphics.PreferredBackBufferHeight)
                 {
                     snowflake.Y = -snowflake.Size;
                     snowflake.X = random.Next(_graphics.PreferredBackBufferWidth);
